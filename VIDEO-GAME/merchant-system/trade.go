@@ -12,12 +12,12 @@ func buyitem(p *playersystem.Player, itemName string, price int, atkBonus int) {
 		p.Inventory = append(p.Inventory, itemName)
 		p.Atk = +atkBonus
 
-		fmt.Println("Achim : Merci pour ton achat aventurier ! Tu obtiens : %s. »\n", itemName)
+		fmt.Println("Reüs : Merci pour ton achat aventurier ! Tu obtiens : %s. »\n", itemName)
 		if atkBonus > 0 {
 			fmt.Println("(Ton attaque augmente de +%d !)\n", atkBonus)
 		}
 
 	} else {
-		fmt.Println("Achim : Tu n'as pas assez d'or")
+		fmt.Println("Reüs : Tu n'as pas assez d'or")
 	}
 }

@@ -16,27 +16,39 @@ type Monster struct {
 	Initiative int
 }
 
-// InitGoblin initialise un gobelin d'entraînement
-func InitGoblin() Monster {
+// InitSimerianWarrior crée un Guerrier Simérien (ennemi de l'histoire)
+func InitSimerianWarrior() Monster {
 	return Monster{
-		Name:       "Gobelin d'entraînement",
-		MaxHP:      40,
-		CurrentHP:  40,
-		Attack:     5,
-		Initiative: 3,
+		Name:       "Guerrier Simérien",
+		MaxHP:      70,
+		CurrentHP:  70,
+		Attack:     12,
+		Initiative: 4,
 	}
 }
 
-// GoblinPattern gère le tour d'attaque du gobelin
-func GoblinPattern(g *Monster, p *playersystem.Player, turn int) {
+// StartBattleSession est appelée par le menu principal pour lancer un vrai combat
+func StartBattleSession(p *playersystem.Player) {
+	dialogue := "\nUn obscur Guerrier Simérien surgit de l'ombre de la vallée...\n"
+	for _, char := range dialogue {
+		fmt.Printf("%c", char)
+		time.Sleep(30 * time.Millisecond)
+	}
+
+	// Lance le combat de l'histoire
+	Battle(p)
+}
+
+// SimerianPattern gère le tour d'attaque du Simérien
+func SimerianPattern(m *Monster, p *playersystem.Player, turn int) {
 	var dmg int
 
-	// Un coup puissant tous les 3 tours
+	// Attaque lourde tous les 3 tours
 	if turn%3 == 0 {
-		dmg = g.Attack * 2
-		fmt.Printf("Le %s prépare un coup puissant !\n", g.Name)
+		dmg = m.Attack + 6
+		fmt.Printf("Le %s frappe avec rage !\n", m.Name)
 	} else {
-		dmg = g.Attack
+		dmg = m.Attack
 	}
 
 	p.CurrentHP -= dmg
@@ -44,15 +56,15 @@ func GoblinPattern(g *Monster, p *playersystem.Player, turn int) {
 		p.CurrentHP = 0
 	}
 
-	fmt.Printf("%s inflige %d dégâts à %s !\n", g.Name, dmg, p.Name)
+	fmt.Printf("Le %s vous inflige %d dégâts !\n", m.Name, dmg)
 	fmt.Printf("Vos PV : %d / %d\n", p.CurrentHP, p.MaxHP)
 }
 
-// CharTurn gère l'action du joueur
-func CharTurn(p *playersystem.Player, g *Monster) {
+// CharTurn gère l'action du joueur pendant le combat
+func CharTurn(p *playersystem.Player, m *Monster) {
 	fmt.Println("\n----- VOTRE TOUR -----")
 	fmt.Println("1. Attaquer")
-	fmt.Println("2. Inventaire")
+	fmt.Println("2. Utiliser une Potion de soin")
 	fmt.Print("Votre choix : ")
 
 	var choice int
@@ -60,67 +72,70 @@ func CharTurn(p *playersystem.Player, g *Monster) {
 
 	switch choice {
 	case 1:
-		dmg := p.Atk // Utilise la vraie valeur d'attaque du joueur
-		g.CurrentHP -= dmg
-		if g.CurrentHP < 0 {
-			g.CurrentHP = 0
+		dmg := p.Atk
+		m.CurrentHP -= dmg
+		if m.CurrentHP < 0 {
+			m.CurrentHP = 0
 		}
-		fmt.Printf("\n%s attaque et inflige %d dégâts au %s !\n", p.Name, dmg, g.Name)
-		fmt.Printf("PV du %s : %d / %d\n", g.Name, g.CurrentHP, g.MaxHP)
+		fmt.Printf("\n%s attaque et inflige %d dégâts au %s !\n", p.Name, dmg, m.Name)
+		fmt.Printf("PV du %s : %d / %d\n", m.Name, m.CurrentHP, m.MaxHP)
+
 	case 2:
-		fmt.Printf("\nInventaire actuel : %v\n", p.Inventory)
-		fmt.Println("(Utilisation des potions à venir...)")
+		foundIndex := -1
+		for i, item := range p.Inventory {
+			if item == "Potion de soin" {
+				foundIndex = i
+				break
+			}
+		}
+
+		if foundIndex == -1 {
+			fmt.Println("\nVous n'avez aucune Potion de soin dans votre inventaire !")
+		} else if p.CurrentHP >= p.MaxHP {
+			fmt.Println("\nVos PV sont déjà au maximum !")
+		} else {
+			p.CurrentHP += 40
+			if p.CurrentHP > p.MaxHP {
+				p.CurrentHP = p.MaxHP
+			}
+			p.Inventory = append(p.Inventory[:foundIndex], p.Inventory[foundIndex+1:]...)
+			fmt.Printf("\nVous buvez une potion ! PV restaurés. Vos PV : %d / %d\n", p.CurrentHP, p.MaxHP)
+		}
+
 	default:
-		fmt.Println("Choix invalide, vous perdez votre tour !")
+		fmt.Println("\nChoix invalide, vous hésitez et perdez votre tour !")
 	}
 }
 
-// TrainingFight orchestre la boucle de combat au tour par tour
-func TrainingFight(p *playersystem.Player) {
-	gob := InitGoblin()
+// Battle gère la boucle principale du vrai combat
+func Battle(p *playersystem.Player) {
+	enemy := InitSimerianWarrior()
 	turn := 1
 
 	fmt.Println("\n==============================")
-	fmt.Println("   COMBAT D'ENTRAÎNEMENT      ")
+	fmt.Println("     COMBAT : VAL LÉE DE DANA ")
 	fmt.Println("==============================")
 
-	// L'initiative est basée sur un seuil fixe ou sur l'attaque si l'initiative n'est pas dans Player
-	playerStarts := true
-
-	for p.CurrentHP > 0 && gob.CurrentHP > 0 {
+	for p.CurrentHP > 0 && enemy.CurrentHP > 0 {
 		fmt.Printf("\n===== TOUR %d =====\n", turn)
 
-		if playerStarts {
-			CharTurn(p, &gob)
-			if gob.CurrentHP <= 0 {
-				fmt.Printf("\nVictoire ! Vous avez vaincu le %s !\n", gob.Name)
-				p.Gold += 15 // Récompense de combat
-				fmt.Println("Vous gagnez 15 pièces d'or !")
-				break
-			}
-			GoblinPattern(&gob, p, turn)
-			if p.CurrentHP <= 0 {
-				fmt.Println("\nVous avez été vaincu... Retour au campement.")
-				break
-			}
-		} else {
-			GoblinPattern(&gob, p, turn)
-			if p.CurrentHP <= 0 {
-				fmt.Println("\nVous avez été vaincu... Retour au campement.")
-				break
-			}
-			CharTurn(p, &gob)
-			if gob.CurrentHP <= 0 {
-				fmt.Printf("\nVictoire ! Vous avez vaincu le %s !\n", gob.Name)
-				p.Gold += 15
-				fmt.Println("Vous gagnez 15 pièces d'or !")
-				break
-			}
+		// Le joueur attaque en premier
+		CharTurn(p, &enemy)
+		if enemy.CurrentHP <= 0 {
+			fmt.Printf("\nVictoire glorieuse ! Vous avez terrassé le %s !\n", enemy.Name)
+			p.Gold += 35
+			fmt.Println("Vous récupérez 35 pièces d'or sur le cadavre du Simérien !")
+			break
+		}
+
+		// Tour de l'ennemi
+		SimerianPattern(&enemy, p, turn)
+		if p.CurrentHP <= 0 {
+			fmt.Println("\nVous vous écroulez au combat... Le domaine de Dana succombe aux Simériens.")
+			break
 		}
 
 		turn++
 		time.Sleep(1 * time.Second)
 	}
-
-	fmt.Println("\nLe combat est terminé ! Appuyez sur Entrée pour continuer...")
 }

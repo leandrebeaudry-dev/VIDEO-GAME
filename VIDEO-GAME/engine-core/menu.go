@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	blacksmithsystem "github.com/leandrebeaudry-dev/VIDEO-GAME/blacksmith-system"
+	combatsystem "github.com/leandrebeaudry-dev/VIDEO-GAME/combat-system"
 	merchantsystem "github.com/leandrebeaudry-dev/VIDEO-GAME/merchant-system"
 	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
 )
@@ -37,9 +39,10 @@ func MainMenu(p *playersystem.Player) {
 		fmt.Println("2. Accéder à l'inventaire")
 		fmt.Println("3. Camp d'entrainement")
 		fmt.Println("4. Qui sont-ils")
-		fmt.Println("5. Marchand")
-		fmt.Println("6. Achim le Forgeron")
-		fmt.Println("7. Quitter")
+		fmt.Println("5. Combat")
+		fmt.Println("6. Marchand")
+		fmt.Println("7. Achim le Forgeron")
+		fmt.Println("8. Quitter")
 		fmt.Print("Entrez votre choix : ")
 		fmt.Scanln(&choice)
 
@@ -97,12 +100,18 @@ func MainMenu(p *playersystem.Player) {
 			pauseAttendEntree()
 
 		case 5:
-			merchantsystem.StartMerchantSession(p)
+			combatsystem.StartBattleSession(p)
 			pauseAttendEntree()
 
 		case 6:
+			merchantsystem.StartMerchantSession(p)
+			pauseAttendEntree()
 
 		case 7:
+			blacksmithsystem.StratBlacksmithSession(p)
+			pauseAttendEntree()
+
+		case 8:
 			fmt.Println("\nAu revoir")
 			return
 

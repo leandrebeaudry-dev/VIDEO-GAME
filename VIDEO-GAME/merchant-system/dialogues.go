@@ -17,8 +17,8 @@ func SpeakText(text string) {
 // WelcomeDialogue affiche le dialogue d'accueil d'Achim
 func WelcomeDialogue() {
 	fmt.Println("\n==============================")
-	fmt.Println("   BIENVENUE CHEZ LE MARCHAND ")
+	fmt.Println(" BIENVENUE CHEZ REÜS LE MARCHAND ")
 	fmt.Println("==============================")
-	SpeakText("Achim : « Bienvenue chez le marchand, voyageur ! »")
-	SpeakText("Achim : « Jette un œil à ce que j'ai en stock... »\n")
+	SpeakText("Reüs : « Bienvenue chez le marchand, voyageur ! »")
+	SpeakText("Reüs : « Jette un œil à ce que j'ai en stock... »\n")
 }
