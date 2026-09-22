@@ -33,43 +33,45 @@ func StratBlacksmithSession(p *playersystem.Player) {
 
 		switch choice {
 		case 1:
-			if price >= 80 {
-				p.Gold >= price
+			price = 80 
+			if p.Gold >= price {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Hache de Kratos")
-				Atk = +17
+				p.Atk = +17
 				fmt.Println("Achim : choix judicieux, mais attention, un grand pouvoir implique de grande responsabilité")
 			} else {
 				fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
 			}
 
 		case 2:
-			if price >= 50 {
-				p.Gold >= price
+			price = 50 
+			if p.Gold = price {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Epée d'Eden")
-				Atk = +10
+				p.Atk = +10
 				fmt.Println("Achim : Une arme pleine de sagesse mais destructrice")
 			} else {
 				fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
 			}
 
 		case 3:
-			if price >= 60 {
-				p.Gold >= price
+			price = 60 
+			if p.Gold >= price {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Marteau de thor")
+				p.Atk = +12
 				fmt.Println("Achim : L'arme des Dieux du tonnerre ! ")
 			} else {
 				fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
 			}
 
 		case 4:
-			if price >= 30 {
-				p.Gold >= price
+			price = 30 
+			if	p.Gold >= price {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Lance d'Achille")
 				fmt.Println("Achim : Gare à ton talon ahah")
+				p.Atk = +5
 			} else {
 				fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
 			}
