@@ -45,7 +45,7 @@ func MainMenu(p *playersystem.Player) {
 
 		switch choice {
 		case 1:
-			p.ShowInfo()
+			p.DisplayInfo()
 			pauseAttendEntree()
 
 		case 2:
@@ -75,15 +75,15 @@ func MainMenu(p *playersystem.Player) {
 
 				if foundIndex == -1 {
 					fmt.Println("Vous n'avez pas de Potion de soin !")
-				} else if p.HP >= p.MaxHP {
+				} else if p.CurrentHP >= p.MaxHP {
 					fmt.Println("Vos PV sont déjà au maximum !")
 				} else {
-					p.HP += 50
-					if p.HP > p.MaxHP {
-						p.HP = p.MaxHP
+					p.CurrentHP += 50
+					if p.CurrentHP > p.MaxHP {
+						p.CurrentHP = p.MaxHP
 					}
 					p.Inventory = append(p.Inventory[:foundIndex], p.Inventory[foundIndex+1:]...)
-					fmt.Printf("Vous utilisez une potion ! PV actuels : %d/%d\n", p.HP, p.MaxHP)
+					fmt.Printf("Vous utilisez une potion ! PV actuels : %d/%d\n", p.CurrentHP, p.MaxHP)
 				}
 			}
 			pauseAttendEntree()
