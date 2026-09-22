@@ -1,6 +1,9 @@
 package blacksmithsystem
 
 import (
+	"fmt"
+	"time"
+
 	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
 )
 
@@ -23,7 +26,7 @@ func StratBlacksmithSession(p *playersystem.Player) {
 		fmt.Println("5. Quitter la boutique")
 		fmt.Print("Achim : « Que souhaites-tu acheter ? » : ")
 
-	var choice int
+		var choice int
 		fmt.Scanln(&choice)
 
 		var price int
@@ -31,27 +34,53 @@ func StratBlacksmithSession(p *playersystem.Player) {
 		switch choice {
 		case 1:
 			if price >= 80 {
-			p.Gold >= price 
-			p.Gold -= price 
-			p.Inventory = append(p.Inventory, "Hache de Kratos")
-			Atk = +17
-			fmt.Println("Achim : choix judicieux, mais attention, un grand pouvoir implique de grande responsabilité")
-		} else {
-			fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
-		}
+				p.Gold >= price
+				p.Gold -= price
+				p.Inventory = append(p.Inventory, "Hache de Kratos")
+				Atk = +17
+				fmt.Println("Achim : choix judicieux, mais attention, un grand pouvoir implique de grande responsabilité")
+			} else {
+				fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
+			}
 
 		case 2:
 			if price >= 50 {
-				p.Gold >= price 
+				p.Gold >= price
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Epée d'Eden")
 				Atk = +10
 				fmt.Println("Achim : Une arme pleine de sagesse mais destructrice")
-		} else {
-			fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
-		}
-		
+			} else {
+				fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
+			}
+
 		case 3:
+			if price >= 60 {
+				p.Gold >= price
+				p.Gold -= price
+				p.Inventory = append(p.Inventory, "Marteau de thor")
+				fmt.Println("Achim : L'arme des Dieux du tonnerre ! ")
+			} else {
+				fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
+			}
+
+		case 4:
+			if price >= 30 {
+				p.Gold >= price
+				p.Gold -= price
+				p.Inventory = append(p.Inventory, "Lance d'Achille")
+				fmt.Println("Achim : Gare à ton talon ahah")
+			} else {
+				fmt.Println("Achim : escroc, tu n'as point bourse à me donner")
+			}
+
+		case 5:
+			fmt.Println("Achim : Au revoir sang-mêlé(e)")
+			return
+
+		default:
+			fmt.Println("\nAchim : « Va t-en, je ne vends pas ca git »")
+		}
+
 	}
 }
-
