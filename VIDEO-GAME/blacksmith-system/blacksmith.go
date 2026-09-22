@@ -33,7 +33,7 @@ func StratBlacksmithSession(p *playersystem.Player) {
 
 		switch choice {
 		case 1:
-			price = 80 
+			price = 80
 			if p.Gold >= price {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Hache de Kratos")
@@ -44,8 +44,8 @@ func StratBlacksmithSession(p *playersystem.Player) {
 			}
 
 		case 2:
-			price = 50 
-			if p.Gold = price {
+			price = 50
+			if p.Gold >= price {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Epée d'Eden")
 				p.Atk = +10
@@ -55,7 +55,7 @@ func StratBlacksmithSession(p *playersystem.Player) {
 			}
 
 		case 3:
-			price = 60 
+			price = 60
 			if p.Gold >= price {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Marteau de thor")
@@ -66,8 +66,8 @@ func StratBlacksmithSession(p *playersystem.Player) {
 			}
 
 		case 4:
-			price = 30 
-			if	p.Gold >= price {
+			price = 30
+			if p.Gold >= price {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Lance d'Achille")
 				fmt.Println("Achim : Gare à ton talon ahah")
