@@ -79,7 +79,7 @@ func StratBlacksmithSession(p *playersystem.Player) {
 			return
 
 		default:
-			fmt.Println("\nAchim : « Va t-en, je ne vends pas ca git »")
+			fmt.Println("\nAchim : « Va t-en, je ne vends pas ca »")
 		}
 
 	}
