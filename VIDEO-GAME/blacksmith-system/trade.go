@@ -11,12 +11,12 @@ func buyitem(p *playersystem.Player, itemName string, price int, atkBonus int) {
 		p.Gold -= price
 		p.Inventory = append(p.Inventory, itemName)
 		p.Atk = +atkBonus
-	}
-	fmt.Println("Achim : Bénis soit votre aventure champion §")
-	if atkBonus > 0 {
-		fmt.Println("(Achim : Ton attaque augmente de +%d !)\n", atkBonus)
-
+		fmt.Println("Hakim : Bénis soit votre aventure champion §")
 	} else {
-		fmt.Println("Achim : Arh, tu ne possède point assez")
+		fmt.Println("Hakim : Arh, tu ne possède point assez")
+	}
+	if atkBonus > 0 {
+		fmt.Printf("(Hakim : Ton attaque augmente de +%d !)\n", atkBonus)
+
 	}
 }

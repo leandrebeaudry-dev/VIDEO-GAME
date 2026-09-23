@@ -36,7 +36,7 @@ func CraftItem(p *playersystem.Player, itemName string, recipe map[string]int) {
 	// 1. Limite d'inventaire (ex: 10 objets max)
 	maxInventorySize := 10
 	if len(p.Inventory) >= maxInventorySize {
-		fmt.Printf("\nAchim : « Ton sac est plein ! (%d/%d objets). Fais de la place d'abord. »\n", len(p.Inventory), maxInventorySize)
+		fmt.Printf("\nHakim : « Ton sac est plein ! (%d/%d objets). Fais de la place d'abord. »\n", len(p.Inventory), maxInventorySize)
 		return
 	}
 
@@ -44,7 +44,7 @@ func CraftItem(p *playersystem.Player, itemName string, recipe map[string]int) {
 	for mat, reqCount := range recipe {
 		currentCount := CountItem(p.Inventory, mat)
 		if currentCount < reqCount {
-			fmt.Printf("\nAchim : « Il te manque des matériaux ! Requis : %d x %s (tu en as %d). »\n", reqCount, mat, currentCount)
+			fmt.Printf("\nHakim : « Il te manque des matériaux ! Requis : %d x %s (tu en as %d). »\n", reqCount, mat, currentCount)
 			return
 		}
 	}
@@ -55,18 +55,18 @@ func CraftItem(p *playersystem.Player, itemName string, recipe map[string]int) {
 	}
 
 	p.Inventory = append(p.Inventory, itemName)
-	fmt.Printf("\nAchim : « Et voilà ! Ton %s est forgé avec succès ! »\n", itemName)
+	fmt.Printf("\nHakim : « Et voilà ! Ton %s est forgé avec succès ! »\n", itemName)
 }
 
 // Menu de fabrication des équipements
 func CraftMenu(p *playersystem.Player) {
 	for {
-		fmt.Println("\n--- ATELIER DE FABRICATION D'ACHIM ---")
+		fmt.Println("\n--- ATELIER DE FABRICATION D'Hakim ---")
 		fmt.Println("1. Chapeau de l'aventurier (1 Plume de Corbeau, 1 Cuir de Sanglier)")
 		fmt.Println("2. Tunique de l'aventurier (2 Fourrure de loup, 1 Peau de Troll)")
 		fmt.Println("3. Bottes de l'aventurier  (1 Fourrure de loup, 1 Cuir de Sanglier)")
 		fmt.Println("0. Retour au comptoir")
-		fmt.Print("Achim : « Que veux-tu que je te forge ? » : ")
+		fmt.Print("Hakim : « Que veux-tu que je te forge ? » : ")
 
 		var choice int
 		fmt.Scanln(&choice)
@@ -84,7 +84,7 @@ func CraftMenu(p *playersystem.Player) {
 		case 0:
 			return
 		default:
-			fmt.Println("\nAchim : « Je ne sais pas forger ça ! »")
+			fmt.Println("\nHakim : « Je ne sais pas forger ça ! »")
 		}
 	}
 }
@@ -92,10 +92,10 @@ func CraftMenu(p *playersystem.Player) {
 // StartBlacksmithSession est le point d'entrée du forgeron
 func StartBlacksmithSession(p *playersystem.Player) {
 	fmt.Println("\n==========================================")
-	fmt.Println("       LE COMPTOIR D'ACHIM LE FORGERON    ")
+	fmt.Println("       LE COMPTOIR D'Hakim LE FORGERON    ")
 	fmt.Println("==========================================")
 
-	dialogue := "Achim : « Halt, donne ta bourse et prends ton dû !\n         Ici, tout est taillé dans le fer et trempé dans le feu »\n"
+	dialogue := "Hakim : « Halt, donne ta bourse et prends ton dû !\n         Ici, tout est taillé dans le fer et trempé dans le feu »\n"
 	for _, char := range dialogue {
 		fmt.Printf("%c", char)
 		time.Sleep(30 * time.Millisecond)
@@ -109,7 +109,7 @@ func StartBlacksmithSession(p *playersystem.Player) {
 		fmt.Println("4. Lance d'Achille       (30 Po, +5 ATK)")
 		fmt.Println("5. Fabriquer un équipement (Crafting)")
 		fmt.Println("6. Quitter la boutique")
-		fmt.Print("Achim : « Que souhaites-tu faire ? » : ")
+		fmt.Print("Hakim : « Que souhaites-tu faire ? » : ")
 
 		var choice int
 		fmt.Scanln(&choice)
@@ -123,9 +123,9 @@ func StartBlacksmithSession(p *playersystem.Player) {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Hache de Kratos")
 				p.Atk += 17
-				fmt.Println("Achim : Choix judicieux, mais attention, un grand pouvoir implique de grandes responsabilités.")
+				fmt.Println("Hakim : Choix judicieux, mais attention, un grand pouvoir implique de grandes responsabilités.")
 			} else {
-				fmt.Println("Achim : Escroc, tu n'as point bourse à me donner !")
+				fmt.Println("Hakim : Escroc, tu n'as point bourse à me donner !")
 			}
 
 		case 2:
@@ -134,9 +134,9 @@ func StartBlacksmithSession(p *playersystem.Player) {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Épée d'Eden")
 				p.Atk += 10
-				fmt.Println("Achim : Une arme pleine de sagesse mais destructrice.")
+				fmt.Println("Hakim : Une arme pleine de sagesse mais destructrice.")
 			} else {
-				fmt.Println("Achim : Escroc, tu n'as point bourse à me donner !")
+				fmt.Println("Hakim : Escroc, tu n'as point bourse à me donner !")
 			}
 
 		case 3:
@@ -145,9 +145,9 @@ func StartBlacksmithSession(p *playersystem.Player) {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Marteau de Thor")
 				p.Atk += 12
-				fmt.Println("Achim : L'arme des Dieux du tonnerre !")
+				fmt.Println("Hakim : L'arme des Dieux du tonnerre !")
 			} else {
-				fmt.Println("Achim : Escroc, tu n'as point bourse à me donner !")
+				fmt.Println("Hakim : Escroc, tu n'as point bourse à me donner !")
 			}
 
 		case 4:
@@ -156,20 +156,20 @@ func StartBlacksmithSession(p *playersystem.Player) {
 				p.Gold -= price
 				p.Inventory = append(p.Inventory, "Lance d'Achille")
 				p.Atk += 5
-				fmt.Println("Achim : Gare à ton talon ahah !")
+				fmt.Println("Hakim : Gare à ton talon ahah !")
 			} else {
-				fmt.Println("Achim : Escroc, tu n'as point bourse à me donner !")
+				fmt.Println("Hakim : Escroc, tu n'as point bourse à me donner !")
 			}
 
 		case 5:
 			CraftMenu(p)
 
 		case 6:
-			fmt.Println("Achim : Au revoir sang-mêlé(e) !")
+			fmt.Println("Hakim : Au revoir sang-mêlé(e) !")
 			return
 
 		default:
-			fmt.Println("\nAchim : « Va-t'en, je ne vends pas ça ! »")
+			fmt.Println("\nHakim : « Va-t'en, je ne vends pas ça ! »")
 		}
 	}
 }

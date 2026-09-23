@@ -31,7 +31,7 @@ func getch() byte {
 
 // PlayIntro affiche un texte lettre par lettre, ou instantanément si ESPACE/ENTRÉE est pressé
 func PlayIntro() {
-	story := "Dans la bretagne Armoricaine, le domaine de Dana a été dévasté par les Simériens \n Achim est venu vous chercher...\nVotre voyage dans la vallée de Dana commence maintenant.\n\n"
+	story := "Dans la bretagne Armoricaine, le domaine de Dana reignait sur les terres de leur ancêtres les Celtes, mais un jour... tout bascula lorsque les Simériens ont envahi les terres. Vous veillez sur votre femme et votre enfant; \n Un soir, Baguiar, le fils d'Hakim le forgeron est venu vous chercher...\nVotre voyage dans la vallée de Dana commence maintenant.\n\n"
 
 	skipped := false
 
@@ -63,26 +63,21 @@ func MainMenu(p *playersystem.Player) {
 	var choice int
 
 	for {
-		// --- CONDITION DE VICTOIRE (FIN DU JEU) ---
-		if p.Level >= 5 {
-			fmt.Println("\n=======================================================")
-			fmt.Println("   FÉLICITATIONS ! VOUS AVEZ ATTEINT LE NIVEAU 5 !   ")
-			fmt.Println(" Le domaine de Dana est enfin libéré des Simériens !   ")
-			fmt.Println("       Jules et Léandre vous remercient d'avoir joué ! ")
-			fmt.Println("=======================================================")
-			return // Quitte le jeu immédiatement
-		}
-
 		fmt.Println("\n==============================")
 		fmt.Println("       MENU PRINCIPAL        ")
 		fmt.Println("==============================")
 		fmt.Println("1. Afficher les informations du personnage")
 		fmt.Println("2. Accéder à l'inventaire")
 		fmt.Println("3. Camp d'entrainement")
-		fmt.Println("4. Qui sont-ils")
-		fmt.Println("5. Combat")
-		fmt.Println("6. Marchand")
-		fmt.Println("7. Achim le Forgeron")
+		fmt.Println("4. Combat")
+		fmt.Println("5. Marchand")
+		fmt.Println("6. Hakim le Forgeron")
+
+		// L'Easter Egg s'affiche uniquement à partir du niveau 2
+		if p.Level >= 2 {
+			fmt.Println("7. 🌟 Easter Egg")
+		}
+
 		fmt.Println("8. Quitter")
 		fmt.Print("Entrez votre choix : ")
 		fmt.Scanln(&choice)
@@ -137,19 +132,23 @@ func MainMenu(p *playersystem.Player) {
 			pauseAttendEntree()
 
 		case 4:
-			fmt.Println("\nBravo, vous avez trouvé les créateurs du jeu, Jules et Léandre !")
-			pauseAttendEntree()
-
-		case 5:
 			combatsystem.StartBattleSession(p)
 			pauseAttendEntree()
 
-		case 6:
+		case 5:
 			merchantsystem.StartMerchantSession(p)
 			pauseAttendEntree()
 
-		case 7:
+		case 6:
 			blacksmithsystem.StartBlacksmithSession(p)
+			pauseAttendEntree()
+
+		case 7:
+			if p.Level >= 2 {
+				fmt.Println("\nBravo, vous avez trouvé les créateurs du jeu, Jules et Léandre !")
+			} else {
+				fmt.Println("Choix invalide.")
+			}
 			pauseAttendEntree()
 
 		case 8:

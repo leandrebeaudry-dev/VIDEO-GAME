@@ -8,7 +8,6 @@ import (
 	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
 )
 
-// Monster représente le contrat d'un ennemi
 type Monster struct {
 	Name      string
 	MaxHP     int
@@ -16,7 +15,6 @@ type Monster struct {
 	Attack    int
 }
 
-// InitSimerianWarrior crée le Guerrier Simérien de l'histoire
 func InitSimerianWarrior() Monster {
 	return Monster{
 		Name:      "Guerrier Simérien",
@@ -26,7 +24,6 @@ func InitSimerianWarrior() Monster {
 	}
 }
 
-// SimerianRandomAttack sélectionne une attaque aléatoire parmi 4
 func SimerianRandomAttack(m *Monster, p *playersystem.Player) {
 	rand.Seed(time.Now().UnixNano())
 	attackType := rand.Intn(4) // Choix entre 0, 1, 2 et 3

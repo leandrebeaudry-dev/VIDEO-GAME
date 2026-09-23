@@ -15,8 +15,8 @@ func SpeakText(text string) {
 
 func WelcomeDialogue() {
 	fmt.Println("\n==============================")
-	fmt.Println("BIENVENUE CHEZ ACHIM LE FORGERON")
+	fmt.Println("BIENVENUE CHEZ HAKIM LE FORGERON")
 	fmt.Println("==============================")
-	SpeakText("Achim : « Bienvenue chez le forgeron, voyageur ! »")
-	SpeakText("Achim : « Que puis-je afillé pour vous ? »\n")
+	SpeakText("Hakim : « Bienvenue chez le forgeron, voyageur ! »")
+	SpeakText("Hakim : « Que puis-je afillé pour vous ? »\n")
 }
