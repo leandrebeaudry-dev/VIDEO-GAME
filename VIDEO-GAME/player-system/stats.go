@@ -2,15 +2,16 @@ package playersystem
 
 import "fmt"
 
-// DisplayInfo affiche l'ensemble des caractéristiques du personnage
-func (p *Player) DisplayInfo() {
-	fmt.Println("\n--- FICHE DE PERSONNAGE ---")
-	fmt.Printf("Nom       : %s\n", p.Name)
-	fmt.Printf("Classe    : %s\n", p.Class)
-	fmt.Printf("Niveau    : %d\n", p.Level)
-	fmt.Printf("PV        : %d / %d\n", p.CurrentHP, p.MaxHP)
-	fmt.Printf("Attaque   : %d\n", p.Atk)
-	fmt.Printf("Or        : %d Po\n", p.Gold)
-	fmt.Printf("Inventaire: %v\n", p.Inventory)
-	fmt.Println("---------------------------")
+// Heal restaure les PV du joueur
+func (p *Player) Heal(amount int) {
+	p.CurrentHP += amount
+	if p.CurrentHP > p.MaxHP {
+		p.CurrentHP = p.MaxHP
+	}
+	fmt.Printf("Vous vous soignez de %d PV. (PV actuels: %d/%d)\n", amount, p.CurrentHP, p.MaxHP)
+}
+
+// RestoreSP réinitialise les PC au maximum
+func (p *Player) RestoreSP() {
+	p.CurrentSP = p.SkillPoints
 }

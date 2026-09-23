@@ -23,8 +23,8 @@ func StartMerchantSession(p *playersystem.Player) {
 	for {
 		fmt.Printf("\n--- Vos Pièces d'Or : %d Po ---\n", p.Gold)
 		fmt.Println("1. Potion de soin       (20 Po)")
-		fmt.Println("2. Épée en acier        (50 Po, +10 ATK)")
-		fmt.Println("3. Bâton magique        (40 Po, +7 ATK)")
+		fmt.Println("2. Potion de rage       (50 Po, +10 ATK)")
+		fmt.Println("3. Shaker protéiné      (40 Po, +7 ATK)")
 		fmt.Println("4. Dague en acier       (30 Po, +5 ATK)")
 		fmt.Println("5. Sort d'enchantement  (50 Po)")
 		fmt.Println("6. Quitter la boutique")
@@ -50,9 +50,9 @@ func StartMerchantSession(p *playersystem.Player) {
 			price = 50
 			if p.Gold >= price {
 				p.Gold -= price
-				p.Inventory = append(p.Inventory, "Épée en acier")
+				p.Inventory = append(p.Inventory, "Potion de rage")
 				p.Atk += 10
-				fmt.Println("\nReüs : « Une excellente lame ! Ton attaque augmente de +10. »")
+				fmt.Println("\nReüs : « Une excellente potion ! Ton attaque augmente de +10. »")
 			} else {
 				fmt.Println("\nReüs : « Ah, tu n'as pas assez de pièces. »")
 			}
@@ -61,9 +61,9 @@ func StartMerchantSession(p *playersystem.Player) {
 			price = 40
 			if p.Gold >= price {
 				p.Gold -= price
-				p.Inventory = append(p.Inventory, "Bâton magique")
+				p.Inventory = append(p.Inventory, "Shaker protéiné")
 				p.Atk += 7
-				fmt.Println("\nReüs : « Un bâton très puissant ! Ton attaque augmente de +7. »")
+				fmt.Println("\nReüs : « De bonne protéines ! Ton attaque augmente de +7. »")
 			} else {
 				fmt.Println("\nReüs : « Ah, tu n'as pas assez de pièces. »")
 			}

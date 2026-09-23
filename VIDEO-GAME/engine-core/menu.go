@@ -2,6 +2,7 @@ package enginecore
 
 import (
 	"fmt"
+	"syscall"
 	"time"
 
 	blacksmithsystem "github.com/leandrebeaudry-dev/VIDEO-GAME/blacksmith-system"
@@ -10,13 +11,43 @@ import (
 	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
 )
 
-// PlayIntro affiche un texte lettre par lettre
+var (
+	msvcrt    = syscall.NewLazyDLL("msvcrt.dll")
+	procKbHit = msvcrt.NewProc("_kbhit")
+	procGetCh = msvcrt.NewProc("_getch")
+)
+
+// kbhit vérifie si une touche a été pressée sans bloquer le programme
+func kbhit() bool {
+	ret, _, _ := procKbHit.Call()
+	return ret != 0
+}
+
+// getch lit la touche pressée
+func getch() byte {
+	ret, _, _ := procGetCh.Call()
+	return byte(ret)
+}
+
+// PlayIntro affiche un texte lettre par lettre, ou instantanément si ESPACE/ENTRÉE est pressé
 func PlayIntro() {
-	story := "Dans la bretagne Armoricaine, le domaine de Dana a été dévasté par les Simériens \n Achim est venu vous chercher...\nVotre voyage dans la valée de Dana commence maintenant.\n\n"
+	story := "Dans la bretagne Armoricaine, le domaine de Dana a été dévasté par les Simériens \n Achim est venu vous chercher...\nVotre voyage dans la vallée de Dana commence maintenant.\n\n"
+
+	skipped := false
 
 	for _, char := range story {
 		fmt.Printf("%c", char)
-		time.Sleep(40 * time.Millisecond)
+
+		if !skipped {
+			if kbhit() {
+				key := getch()
+				// Si touche ESPACE (' '), ENTRÉE ('\r' ou '\n')
+				if key == ' ' || key == '\r' || key == '\n' {
+					skipped = true
+				}
+			}
+			time.Sleep(40 * time.Millisecond)
+		}
 	}
 }
 
@@ -32,6 +63,16 @@ func MainMenu(p *playersystem.Player) {
 	var choice int
 
 	for {
+		// --- CONDITION DE VICTOIRE (FIN DU JEU) ---
+		if p.Level >= 5 {
+			fmt.Println("\n=======================================================")
+			fmt.Println("   FÉLICITATIONS ! VOUS AVEZ ATTEINT LE NIVEAU 5 !   ")
+			fmt.Println(" Le domaine de Dana est enfin libéré des Simériens !   ")
+			fmt.Println("       Jules et Léandre vous remercient d'avoir joué ! ")
+			fmt.Println("=======================================================")
+			return // Quitte le jeu immédiatement
+		}
+
 		fmt.Println("\n==============================")
 		fmt.Println("       MENU PRINCIPAL        ")
 		fmt.Println("==============================")
@@ -92,11 +133,11 @@ func MainMenu(p *playersystem.Player) {
 			pauseAttendEntree()
 
 		case 3:
-			fmt.Println("\nEN construction...")
+			combatsystem.StartTrainingSession(p)
 			pauseAttendEntree()
 
 		case 4:
-			fmt.Println("\nBravo, vous avez trouver les créateurs du jeux, Jules et Léandre!")
+			fmt.Println("\nBravo, vous avez trouvé les créateurs du jeu, Jules et Léandre !")
 			pauseAttendEntree()
 
 		case 5:
@@ -108,7 +149,7 @@ func MainMenu(p *playersystem.Player) {
 			pauseAttendEntree()
 
 		case 7:
-			blacksmithsystem.StratBlacksmithSession(p)
+			blacksmithsystem.StartBlacksmithSession(p)
 			pauseAttendEntree()
 
 		case 8:
