@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	enginecore "github.com/leandrebeaudry-dev/VIDEO-GAME/engine-core"
@@ -6,12 +6,12 @@ import (
 )
 
 func main() {
-	// 1. Animation d'introduction
+	// 1. Lancement de l'introduction narrative
 	enginecore.PlayIntro()
 
-	// 2. Création du personnage
+	// 2. Création et initialisation du personnage
 	player := playersystem.CharacterCreation()
 
-	// 3. Lancement du menu principal
+	// 3. Affichage du menu principal
 	enginecore.MainMenu(player)
 }
