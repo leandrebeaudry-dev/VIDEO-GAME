@@ -7,7 +7,6 @@ import (
 	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
 )
 
-// CountItem compte combien de fois un objet est dans l'inventaire
 func CountItem(inventory []string, item string) int {
 	count := 0
 	for _, i := range inventory {
@@ -18,7 +17,6 @@ func CountItem(inventory []string, item string) int {
 	return count
 }
 
-// RemoveItem retire X exemplaires d'un objet de l'inventaire
 func RemoveItem(inventory []string, item string, amount int) []string {
 	for i := 0; i < amount; i++ {
 		for index, v := range inventory {
@@ -31,16 +29,13 @@ func RemoveItem(inventory []string, item string, amount int) []string {
 	return inventory
 }
 
-// CraftItem gère la fabrication des armures avec vérification des ingrédients
 func CraftItem(p *playersystem.Player, itemName string, recipe map[string]int) {
-	// 1. Limite d'inventaire (ex: 10 objets max)
 	maxInventorySize := 10
 	if len(p.Inventory) >= maxInventorySize {
 		fmt.Printf("\nHakim : « Ton sac est plein ! (%d/%d objets). Fais de la place d'abord. »\n", len(p.Inventory), maxInventorySize)
 		return
 	}
 
-	// 2. Vérification des matériaux
 	for mat, reqCount := range recipe {
 		currentCount := CountItem(p.Inventory, mat)
 		if currentCount < reqCount {
@@ -49,7 +44,6 @@ func CraftItem(p *playersystem.Player, itemName string, recipe map[string]int) {
 		}
 	}
 
-	// 3. Retrait des ingrédients et ajout du nouvel objet
 	for mat, reqCount := range recipe {
 		p.Inventory = RemoveItem(p.Inventory, mat, reqCount)
 	}
@@ -58,7 +52,6 @@ func CraftItem(p *playersystem.Player, itemName string, recipe map[string]int) {
 	fmt.Printf("\nHakim : « Et voilà ! Ton %s est forgé avec succès ! »\n", itemName)
 }
 
-// Menu de fabrication des équipements
 func CraftMenu(p *playersystem.Player) {
 	for {
 		fmt.Println("\n--- ATELIER DE FABRICATION D'Hakim ---")
@@ -89,7 +82,6 @@ func CraftMenu(p *playersystem.Player) {
 	}
 }
 
-// StartBlacksmithSession est le point d'entrée du forgeron
 func StartBlacksmithSession(p *playersystem.Player) {
 	fmt.Println("\n==========================================")
 	fmt.Println("       LE COMPTOIR D'Hakim LE FORGERON    ")

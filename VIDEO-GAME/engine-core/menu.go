@@ -9,6 +9,7 @@ import (
 	combatsystem "github.com/leandrebeaudry-dev/VIDEO-GAME/combat-system"
 	merchantsystem "github.com/leandrebeaudry-dev/VIDEO-GAME/merchant-system"
 	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
+	worldsystem "github.com/leandrebeaudry-dev/VIDEO-GAME/world-system"
 )
 
 var (
@@ -17,19 +18,16 @@ var (
 	procGetCh = msvcrt.NewProc("_getch")
 )
 
-// kbhit vérifie si une touche a été pressée sans bloquer le programme
 func kbhit() bool {
 	ret, _, _ := procKbHit.Call()
 	return ret != 0
 }
 
-// getch lit la touche pressée
 func getch() byte {
 	ret, _, _ := procGetCh.Call()
 	return byte(ret)
 }
 
-// PlayIntro affiche un texte lettre par lettre, ou instantanément si ESPACE/ENTRÉE est pressé
 func PlayIntro() {
 	story := "Dans la bretagne Armoricaine, le domaine de Dana reignait sur les terres de leur ancêtres les Celtes, mais un jour... tout bascula lorsque les Simériens ont envahi les terres. Vous veillez sur votre femme et votre enfant; \n Un soir, Baguiar, le fils d'Hakim le forgeron est venu vous chercher...\nVotre voyage dans la vallée de Dana commence maintenant.\n\n"
 
@@ -51,14 +49,12 @@ func PlayIntro() {
 	}
 }
 
-// pauseAttendEntree met en pause jusqu'à ce que le joueur appuie sur Entrée
 func pauseAttendEntree() {
 	fmt.Println("\n[ Appuyez sur Entrée pour revenir au menu principal ]")
 	var pause string
 	fmt.Scanln(&pause)
 }
 
-// MainMenu gère la boucle principale du jeu
 func MainMenu(p *playersystem.Player) {
 	var choice int
 
@@ -72,13 +68,13 @@ func MainMenu(p *playersystem.Player) {
 		fmt.Println("4. Combat")
 		fmt.Println("5. Marchand")
 		fmt.Println("6. Hakim le Forgeron")
+		fmt.Println("8. Exploration")
 
-		// L'Easter Egg s'affiche uniquement à partir du niveau 2
 		if p.Level >= 2 {
 			fmt.Println("7. 🌟 Easter Egg")
 		}
 
-		fmt.Println("8. Quitter")
+		fmt.Println("9. Quitter")
 		fmt.Print("Entrez votre choix : ")
 		fmt.Scanln(&choice)
 
@@ -152,6 +148,11 @@ func MainMenu(p *playersystem.Player) {
 			pauseAttendEntree()
 
 		case 8:
+			worldsystem.StartNpcsSession(p)
+			worldsystem.StartZonesSession(p)
+			worldsystem.StartMovementSession(p)
+			pauseAttendEntree()
+		case 9:
 			fmt.Println("\nAu revoir")
 			return
 

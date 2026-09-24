@@ -2,7 +2,6 @@ package playersystem
 
 import "fmt"
 
-// Equipment contient les équipements actuellement portés
 type Equipment struct {
 	Head  string
 	Body  string
@@ -27,7 +26,6 @@ type Player struct {
 	Equipped    Equipment
 }
 
-// CharacterCreation gère la création de personnage
 func CharacterCreation() *Player {
 	var name string
 	var classChoice int
@@ -77,14 +75,12 @@ func CharacterCreation() *Player {
 	}
 }
 
-// RemoveItemFromInventory supprime un objet à un index précis
 func (p *Player) RemoveItemFromInventory(index int) {
 	if index >= 0 && index < len(p.Inventory) {
 		p.Inventory = append(p.Inventory[:index], p.Inventory[index+1:]...)
 	}
 }
 
-// EquipItem équipe une pièce d'armure
 func (p *Player) EquipItem(itemName string) {
 	itemIndex := -1
 	for i, item := range p.Inventory {
@@ -180,7 +176,6 @@ func (p *Player) DisplayInfo() {
 	fmt.Println("---------------------------")
 }
 
-// GainXP gère le gain d'XP et la montée de niveau (supporte le multi-level-up)
 func (p *Player) GainXP(amount int) {
 	p.XP += amount
 	fmt.Printf("Vous gagnez %d XP ! (%d / %d)\n", amount, p.XP, p.MaxXP)

@@ -1,5 +1,12 @@
 package worldsystem
 
+import (
+	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
+)
+
+func StartMovementSession(p *playersystem.Player) {
+}
+
 type Vector2 struct {
 	X int
 	Y int

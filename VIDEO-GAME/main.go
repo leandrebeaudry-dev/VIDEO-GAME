@@ -6,12 +6,9 @@ import (
 )
 
 func main() {
-	// 1. Lancement de l'introduction narrative
 	enginecore.PlayIntro()
 
-	// 2. Création et initialisation du personnage
 	player := playersystem.CharacterCreation()
 
-	// 3. Affichage du menu principal
 	enginecore.MainMenu(player)
 }

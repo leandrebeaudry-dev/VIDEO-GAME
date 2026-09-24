@@ -1,15 +1,20 @@
 package worldsystem
 
-import "fmt"
+import (
+	"fmt"
 
-// Structure de base d’un PNJ
+	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
+)
+
+func StartNpcsSession(p *playersystem.Player) {
+}
+
 type NPC struct {
 	Name        string
 	Description string
 	Dialogue    []string
 }
 
-// Fonction pour parler à un PNJ
 func (n NPC) Talk() {
 	fmt.Println("------------------------------------------------")
 	fmt.Println("Vous parlez à :", n.Name)
@@ -23,9 +28,6 @@ func (n NPC) Talk() {
 	fmt.Println("------------------------------------------------")
 }
 
-// --- PNJ liés au Lore ---
-
-// Achim : celui qui vient chercher le joueur
 var Achim = NPC{
 	Name:        "Achim",
 	Description: "Un homme mystérieux, porteur d'une lourde vérité.",
@@ -36,7 +38,6 @@ var Achim = NPC{
 	},
 }
 
-// Survivant du domaine de Dana
 var DanaSurvivor = NPC{
 	Name:        "Survivant de Dana",
 	Description: "Un habitant marqué par la destruction de son domaine.",
@@ -47,7 +48,6 @@ var DanaSurvivor = NPC{
 	},
 }
 
-// Garde du village armoricain
 var VillageGuard = NPC{
 	Name:        "Garde Armoricain",
 	Description: "Un garde qui protège les derniers villages encore debout.",
@@ -58,7 +58,6 @@ var VillageGuard = NPC{
 	},
 }
 
-// Marchand itinérant
 var MerchantNPC = NPC{
 	Name:        "Marchand Itinérant",
 	Description: "Un marchand qui semble connaître beaucoup de secrets.",
@@ -69,7 +68,6 @@ var MerchantNPC = NPC{
 	},
 }
 
-// Fonction pour récupérer un PNJ selon la zone
 func GetNPCByZone(zone string) *NPC {
 	switch zone {
 	case "village":

@@ -1,15 +1,53 @@
 package worldsystem
 
-import "fmt"
+import (
+	"fmt"
 
-// Structure d’une zone du monde
+	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
+)
+
+func StartZonesSession(p *playersystem.Player) {
+	for {
+		fmt.Println("\n==========================================")
+		fmt.Println("       Bienvenue dans l'exploration")
+		fmt.Println("==========================================")
+
+		fmt.Println("1. Village Armoricain")
+		fmt.Println("2. Camp d'Achim")
+		fmt.Println("3. Ruines du Domaine de Dana")
+		fmt.Println("4. Route Commerciale")
+		fmt.Println("5. Vallée de Dana")
+		fmt.Println("6. Retour au menu principal")
+		fmt.Print("Entrez votre choix : ")
+
+		var choice int
+		fmt.Scanln(&choice)
+
+		switch choice {
+		case 1:
+			DisplayZone("village")
+		case 2:
+			DisplayZone("camp_achim")
+		case 3:
+			DisplayZone("ruines_de_dana")
+		case 4:
+			DisplayZone("route_commerciale")
+		case 5:
+			DisplayZone("vallee_de_dana")
+		case 6:
+			return
+		default:
+			fmt.Println("Choix invalide.")
+		}
+	}
+}
+
 type Zone struct {
 	Name        string
 	Description string
 	HasNPC      bool
 }
 
-// Liste des zones du jeu
 var Zones = map[string]Zone{
 	"village": {
 		Name:        "Village Armoricain",
@@ -42,7 +80,6 @@ var Zones = map[string]Zone{
 	},
 }
 
-// Fonction pour afficher une zone
 func DisplayZone(zoneName string) {
 	zone, exists := Zones[zoneName]
 	if !exists {
