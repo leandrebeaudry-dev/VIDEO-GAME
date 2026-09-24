@@ -20,6 +20,7 @@ type Player struct {
 	Atk         int
 	Gold        int
 	SkillPoints int
+	MaxSP       int
 	CurrentSP   int
 	Inventory   []string
 	Skill       []string

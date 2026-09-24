@@ -8,9 +8,6 @@ import (
 	playersystem "github.com/leandrebeaudry-dev/VIDEO-GAME/player-system"
 )
 
-// Monster représente une créature adverse
-
-// StartBattleSession permet de choisir le monstre à affronter
 func StartBattleSession(p *playersystem.Player) {
 	fmt.Println("\n==========================================")
 	fmt.Println("         ZONES DE CHASSE ET COMBAT        ")
@@ -63,133 +60,7 @@ func StartBattleSession(p *playersystem.Player) {
 	Battle(p, &enemy, false)
 }
 
-// OpenCombatInventory gère l'inventaire et l'utilisation des consommables/armes en combat
-func OpenCombatInventory(p *playersystem.Player) bool {
-	if len(p.Inventory) == 0 {
-		fmt.Println("\nVotre inventaire est vide !")
-		return false
-	}
-
-	fmt.Println("\n--- INVENTAIRE DE COMBAT ---")
-	for i, item := range p.Inventory {
-		fmt.Printf("%d. %s\n", i+1, item)
-	}
-	fmt.Println("0. Retour")
-	fmt.Print("Quel objet utiliser ? : ")
-
-	var choice int
-	fmt.Scanln(&choice)
-
-	if choice <= 0 || choice > len(p.Inventory) {
-		return false
-	}
-
-	index := choice - 1
-	selectedItem := p.Inventory[index]
-
-	switch selectedItem {
-	case "Potion de soin":
-		if p.CurrentHP >= p.MaxHP {
-			fmt.Println("\nVos PV sont déjà au maximum !")
-			return false
-		}
-		p.CurrentHP += 40
-		if p.CurrentHP > p.MaxHP {
-			p.CurrentHP = p.MaxHP
-		}
-		p.RemoveItemFromInventory(index)
-		fmt.Printf("\nVous buvez une Potion de soin ! PV : %d / %d\n", p.CurrentHP, p.MaxHP)
-		return true
-
-	case "Hache de Kratos":
-		p.Atk += 25
-		p.RemoveItemFromInventory(index)
-		fmt.Printf("\nVous brandissez la Hache de Kratos ! Votre attaque augmente de +25 (Total : %d) !\n", p.Atk)
-		return true
-
-	case "Épée en fer":
-		p.Atk += 10
-		p.RemoveItemFromInventory(index)
-		fmt.Printf("\nVous équipez l'Épée en fer ! Votre attaque augmente de +10 (Total : %d) !\n", p.Atk)
-		return true
-
-	default:
-		fmt.Printf("\nL'objet %s ne peut pas être utilisé en combat.\n", selectedItem)
-		return false
-	}
-}
-
-// SelectAndCastSpell permet au joueur d'utiliser de la magie
-func SelectAndCastSpell(p *playersystem.Player, m *Monster) bool {
-	if len(p.Skill) == 0 {
-		fmt.Println("\nVous ne connaissez aucun sort !")
-		return false
-	}
-
-	fmt.Println("\n--- VOS SORTS ---")
-	for i, spell := range p.Skill {
-		fmt.Printf("%d. %s\n", i+1, spell)
-	}
-	fmt.Println("0. Retour")
-	fmt.Print("Quel sort voulez-vous lancer ? : ")
-
-	var choice int
-	fmt.Scanln(&choice)
-
-	if choice <= 0 || choice > len(p.Skill) {
-		return false
-	}
-
-	selectedSpell := p.Skill[choice-1]
-
-	switch selectedSpell {
-	case "Coup de poing":
-		cost := 10
-		if p.CurrentSP < cost {
-			fmt.Printf("\nPas assez de PC (%d/%d) pour Coup de poing !\n", p.CurrentSP, cost)
-			return false
-		}
-		p.CurrentSP -= cost
-		dmg := p.Atk
-		m.CurrentHP -= dmg
-		if m.CurrentHP < 0 {
-			m.CurrentHP = 0
-		}
-		fmt.Printf("\nVous lancez %s (-%d PC) et infligez %d dégâts au %s !\n", selectedSpell, cost, dmg, m.Name)
-		return true
-
-	case "Boule de feu":
-		cost := 25
-		if p.CurrentSP < cost {
-			fmt.Printf("\nPas assez de PC (%d/%d) pour Boule de feu !\n", p.CurrentSP, cost)
-			return false
-		}
-		p.CurrentSP -= cost
-		dmg := p.Atk + 20
-		m.CurrentHP -= dmg
-		if m.CurrentHP < 0 {
-			m.CurrentHP = 0
-		}
-		fmt.Printf("\nVous lancez %s (-%d PC) et infligez %d dégâts magiques au %s !\n", selectedSpell, cost, dmg, m.Name)
-		return true
-
-	default:
-		fmt.Printf("\nLe sort %s n'a pas d'effet connu.\n", selectedSpell)
-		return false
-	}
-}
-
-// CharTurn gère le choix d'action du joueur
 func CharTurn(p *playersystem.Player, m *Monster) (bool, bool) {
-	hasItems := len(p.Inventory) > 0
-
-	if p.CurrentSP <= 0 && !hasItems {
-		fmt.Println("\nVous n'avez plus de Points de Compétence ni d'objets !")
-		fmt.Println("Incapable de lutter, vous tombez au combat...")
-		p.CurrentHP = 0
-		return true, false
-	}
-
 	fmt.Println("\n----- VOTRE TOUR -----")
 	fmt.Printf("PV: %d/%d | PC: %d/%d\n", p.CurrentHP, p.MaxHP, p.CurrentSP, p.SkillPoints)
 	fmt.Println("1. Attaque physique basique")
@@ -243,9 +114,10 @@ func CharTurn(p *playersystem.Player, m *Monster) (bool, bool) {
 	}
 }
 
-// Battle est la boucle principale d'affrontement
 func Battle(p *playersystem.Player, enemy *Monster, isTraining bool) {
 	defer func() {
+		// Réinitialisation automatique des PC à la toute fin du combat
+		p.CurrentSP = p.SkillPoints
 		fmt.Printf("\n[ Fin du combat - PV : %d/%d | PC : %d/%d ]\n", p.CurrentHP, p.MaxHP, p.CurrentSP, p.SkillPoints)
 	}()
 
@@ -264,7 +136,6 @@ func Battle(p *playersystem.Player, enemy *Monster, isTraining bool) {
 			break
 		}
 
-		// Victoire du joueur
 		if enemy.CurrentHP <= 0 {
 			fmt.Printf("\nVictoire ! Vous avez vaincu le %s !\n", enemy.Name)
 
@@ -276,14 +147,12 @@ func Battle(p *playersystem.Player, enemy *Monster, isTraining bool) {
 				os.Exit(0)
 			}
 
-			// Soin de victoire
 			p.CurrentHP += 20
 			if p.CurrentHP > p.MaxHP {
 				p.CurrentHP = p.MaxHP
 			}
 			fmt.Printf("Vous récupérez 20 PV après votre victoire ! (PV : %d/%d)\n", p.CurrentHP, p.MaxHP)
 
-			// Drop d'objets
 			var itemLooted string
 			switch enemy.Name {
 			case "Corbeau Noir":
@@ -301,19 +170,16 @@ func Battle(p *playersystem.Player, enemy *Monster, isTraining bool) {
 				fmt.Printf("📦 Vous ramassez sur la dépouille : %s !\n", itemLooted)
 			}
 
-			// Gain Or et XP
 			goldEarned := 15
 			p.Gold += goldEarned
 			fmt.Printf("Vous obtenez %d pièces d'or ! (Total : %d Po)\n", goldEarned, p.Gold)
-			p.GainXP(25)
+			p.GainXP(30)
 			break
 		}
 
-		// Attaque de l'ennemi
 		fmt.Printf("\nLe %s vous attaque et vous inflige %d dégâts !\n", enemy.Name, enemy.Attack)
 		p.CurrentHP -= enemy.Attack
 
-		// Défaite du joueur
 		if p.CurrentHP <= 0 {
 			p.CurrentHP = p.MaxHP / 2
 			fmt.Println("\nVous avez été vaincu... Vos alliés vous ramènent au campement.")
